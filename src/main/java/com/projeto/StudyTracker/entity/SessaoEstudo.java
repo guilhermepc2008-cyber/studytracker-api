@@ -22,15 +22,17 @@ public class SessaoEstudo {
     private LocalDateTime fim;
     @Column(name = "quatidade_minutos")
     private Integer quantidadeDeMinutos;
+    private String anotacao;
 
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim) {
+    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim, String anotacao) {
         this.id = id;
         this.materia = materia;
         this.inicio = inicio;
         this.fim = fim;
+        this.anotacao = anotacao;
     }
 
     @PrePersist
@@ -80,5 +82,13 @@ public class SessaoEstudo {
 
     public void setQuantidadeDeMinutos(Integer quantidadeDeMinutos) {
         this.quantidadeDeMinutos = quantidadeDeMinutos;
+    }
+
+    public String getAnotacao() {
+        return anotacao;
+    }
+
+    public void setAnotacao(String anotacao) {
+        this.anotacao = anotacao;
     }
 }
