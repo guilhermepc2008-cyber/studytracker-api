@@ -27,16 +27,14 @@ public class SessaoEstudo {
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim, String anotacao) {
+    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio,String anotacao) {
         this.id = id;
         this.materia = materia;
         this.inicio = inicio;
-        this.fim = fim;
         this.anotacao = anotacao;
     }
 
-    @PrePersist
-    @PreUpdate
+
     public void calcularQuantidadeDeMinutos() {
         if (this.inicio != null && this.fim != null) {
             this.quantidadeDeMinutos = (int) Duration.between(this.inicio, this.fim).toMinutes();
