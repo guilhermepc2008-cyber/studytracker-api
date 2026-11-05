@@ -10,7 +10,7 @@ public class SessaoEstudo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "sessao_id")
     private Long id;
 
     @ManyToOne
@@ -19,6 +19,7 @@ public class SessaoEstudo {
 
     private LocalDateTime inicio;
     private LocalDateTime fim;
+    @Column(name = "quatidade_minutos")
     private Integer quantidadeDeMinutos;
 
     public SessaoEstudo() {
