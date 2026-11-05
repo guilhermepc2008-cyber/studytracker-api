@@ -2,6 +2,7 @@ package com.projeto.StudyTracker.entity;
 
 import jakarta.persistence.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,13 +26,21 @@ public class SessaoEstudo {
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim, Integer quantidadeDeMinutos) {
+    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim) {
         this.id = id;
         this.materia = materia;
         this.inicio = inicio;
         this.fim = fim;
-        this.quantidadeDeMinutos = quantidadeDeMinutos;
     }
+
+    @PrePersist
+    @PreUpdate
+    public void calcularQuantidadeDeMinutos() {
+        if (this.inicio != null && this.fim != null) {
+            this.quantidadeDeMinutos = (int) Duration.between(this.inicio, this.fim).toMinutes();
+        }
+    }
+
 
     public Long getId() {
         return id;
