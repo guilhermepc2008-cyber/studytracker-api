@@ -5,13 +5,11 @@ import com.projeto.StudyTracker.dto.MateriaResponseDto;
 import com.projeto.StudyTracker.entity.Materia;
 import com.projeto.StudyTracker.repository.MateriaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
 public class MateriaService {
 
     private final MateriaRepository materiaRepository;
@@ -32,16 +30,19 @@ public class MateriaService {
         return toResponseDto(materia);
     }
 
-    @Transactional
     public MateriaResponseDto save(MateriaRequestDto dto) {
-        Materia materia = new Materia();
-        materia.setTitle(dto.title());
-        materia.setDescricao(dto.descricao());
+        Materia materia = toEntity(dto);
         Materia saved = materiaRepository.save(materia);
         return toResponseDto(saved);
     }
 
-    @Transactional
+    public Materia toEntity(MateriaRequestDto dto) {
+        Materia materia = new Materia();
+        materia.setTitle(dto.title());
+        materia.setDescricao(dto.descricao());
+        return materia;
+    }
+
     public void deleteById(Long id) {
         if (!materiaRepository.existsById(id)) {
             throw new RuntimeException("Materia não encontrada com id: " + id);
