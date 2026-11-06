@@ -6,12 +6,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
-
 public class SessaoEstudo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sessao_id")
     private Long id;
 
     @ManyToOne
@@ -20,27 +18,27 @@ public class SessaoEstudo {
 
     private LocalDateTime inicio;
     private LocalDateTime fim;
-    @Column(name = "quatidade_minutos")
     private Integer quantidadeDeMinutos;
     private String anotacao;
 
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio,String anotacao) {
+    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim, String anotacao) {
         this.id = id;
         this.materia = materia;
         this.inicio = inicio;
+        this.fim = fim;
         this.anotacao = anotacao;
     }
 
-
+    @PrePersist
+    @PreUpdate
     public void calcularQuantidadeDeMinutos() {
         if (this.inicio != null && this.fim != null) {
             this.quantidadeDeMinutos = (int) Duration.between(this.inicio, this.fim).toMinutes();
         }
     }
-
 
     public Long getId() {
         return id;

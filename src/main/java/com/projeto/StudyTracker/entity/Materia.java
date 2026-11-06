@@ -1,20 +1,18 @@
 package com.projeto.StudyTracker.entity;
 
-import jakarta.persistence.*;
-
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Materia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "materia_id")
     private Long id;
     private String title;
     private String descricao;
-    @OneToMany(mappedBy = "sessoes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SessaoEstudo> sessoes;
 
     public Materia() {
     }
