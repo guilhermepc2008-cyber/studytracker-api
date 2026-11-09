@@ -7,6 +7,7 @@ import com.projeto.StudyTracker.repository.MateriaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,9 +26,8 @@ public class MateriaService {
     }
 
     public MateriaResponseDto findById(Long id) {
-        Materia materia = materiaRepository.findById(id)
-                .orElse(null);
-        return toResponseDto(materia);
+        Optional<Materia> materia  = materiaRepository.findById(id);
+        return materia.map(this::toResponseDto).orElse(null);
     }
 
     public MateriaResponseDto save(MateriaRequestDto dto) {
