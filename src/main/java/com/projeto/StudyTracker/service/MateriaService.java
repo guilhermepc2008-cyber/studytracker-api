@@ -32,8 +32,8 @@ public class MateriaService {
 
     public MateriaResponseDto save(MateriaRequestDto dto) {
         Materia materia = toEntity(dto);
-        Materia saved = materiaRepository.save(materia);
-        return toResponseDto(saved);
+        materiaRepository.save(materia);
+        return toResponseDto(materia);
     }
 
     public Materia toEntity(MateriaRequestDto dto) {

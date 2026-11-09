@@ -6,7 +6,6 @@ import com.projeto.StudyTracker.entity.Materia;
 import com.projeto.StudyTracker.entity.SessaoEstudo;
 import com.projeto.StudyTracker.repository.MateriaRepository;
 import com.projeto.StudyTracker.repository.SessaoEstudoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +14,14 @@ import java.util.stream.Collectors;
 @Service
 public class SessaoEstudoService {
 
-    @Autowired
-    private  SessaoEstudoRepository sessaoEstudoRepository;
-    private  MateriaRepository materiaRepository;
+    private final SessaoEstudoRepository sessaoEstudoRepository;
+    private final MateriaRepository materiaRepository;
+
+    public SessaoEstudoService(SessaoEstudoRepository sessaoEstudoRepository,
+                               MateriaRepository materiaRepository) {
+        this.sessaoEstudoRepository = sessaoEstudoRepository;
+        this.materiaRepository = materiaRepository;
+    }
 
     public List<SessaoEstudoResponseDto> findAll() {
         return sessaoEstudoRepository.findAll().stream()
