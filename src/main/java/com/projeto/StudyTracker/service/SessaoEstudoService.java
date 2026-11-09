@@ -27,7 +27,7 @@ public class SessaoEstudoService {
 
     public SessaoEstudoResponseDto findById(Long id) {
         SessaoEstudo sessao = sessaoEstudoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sessao de estudo não encontrada com id: " + id));
+                .orElse(null);
         return toResponseDto(sessao);
     }
 
@@ -40,7 +40,7 @@ public class SessaoEstudoService {
 
     public SessaoEstudo toEntity(SessaoEstudoRequestDto dto) {
         Materia materia = materiaRepository.findById(dto.materiaId())
-                .orElseThrow(() -> new RuntimeException("Materia não encontrada com id: " + dto.materiaId()));
+                .orElse(null);
 
         SessaoEstudo sessao = new SessaoEstudo();
         sessao.setMateria(materia);
@@ -54,7 +54,7 @@ public class SessaoEstudoService {
 
     public void deleteById(Long id) {
         if (!sessaoEstudoRepository.existsById(id)) {
-            throw new RuntimeException("Sessao de estudo não encontrada com id: " + id);
+            return;
         }
         sessaoEstudoRepository.deleteById(id);
     }
