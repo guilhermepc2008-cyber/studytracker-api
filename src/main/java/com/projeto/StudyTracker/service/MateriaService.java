@@ -26,7 +26,7 @@ public class MateriaService {
 
     public MateriaResponseDto findById(Long id) {
         Materia materia = materiaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Materia não encontrada com id: " + id));
+                .orElse(null);
         return toResponseDto(materia);
     }
 
@@ -45,7 +45,7 @@ public class MateriaService {
 
     public void deleteById(Long id) {
         if (!materiaRepository.existsById(id)) {
-            throw new RuntimeException("Materia não encontrada com id: " + id);
+            return;
         }
         materiaRepository.deleteById(id);
     }
