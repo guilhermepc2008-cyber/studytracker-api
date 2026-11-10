@@ -36,6 +36,16 @@ public class MateriaService {
         return toResponseDto(materia);
     }
 
+    public MateriaResponseDto update(MateriaRequestDto dto, Long id) {
+       return materiaRepository.findById(id).map(t -> {
+                   t.setDescricao(dto.descricao());
+                   t.setTitle(dto.title());
+                   materiaRepository.save(t);
+                   return toResponseDto(t);
+               }
+       ).orElse(null);
+    }
+
     public Materia toEntity(MateriaRequestDto dto) {
         Materia materia = new Materia();
         materia.setTitle(dto.title());
