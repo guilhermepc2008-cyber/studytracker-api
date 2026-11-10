@@ -26,7 +26,7 @@ public class MateriaService {
     }
 
     public MateriaResponseDto findById(Long id) {
-        Optional<Materia> materia  = materiaRepository.findById(id);
+        Optional<Materia> materia = materiaRepository.findById(id);
         return materia.map(this::toResponseDto).orElse(null);
     }
 
@@ -37,13 +37,13 @@ public class MateriaService {
     }
 
     public MateriaResponseDto update(MateriaRequestDto dto, Long id) {
-       return materiaRepository.findById(id).map(t -> {
-                   t.setDescricao(dto.descricao());
-                   t.setTitle(dto.title());
-                   materiaRepository.save(t);
-                   return toResponseDto(t);
-               }
-       ).orElse(null);
+        return materiaRepository.findById(id).map(t -> {
+                    t.setDescricao(dto.descricao());
+                    t.setTitle(dto.title());
+                    materiaRepository.save(t);
+                    return toResponseDto(t);
+                }
+        ).orElse(null);
     }
 
     public Materia toEntity(MateriaRequestDto dto) {

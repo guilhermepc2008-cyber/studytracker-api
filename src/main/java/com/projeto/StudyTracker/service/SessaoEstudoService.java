@@ -38,7 +38,7 @@ public class SessaoEstudoService {
         return sessaoEstudo.map(this::toResponseDto).orElse(null);
     }
 
-    public SessaoEstudoResponseDto patchanotacao(Long id,AnotacaoRequestDto anotacaoRequestDto) {
+    public SessaoEstudoResponseDto patchanotacao(Long id, AnotacaoRequestDto anotacaoRequestDto) {
         return sessaoEstudoRepository.findById(id).map(t -> {
             t.setAnotacao(anotacaoRequestDto.anotacao());
             sessaoEstudoRepository.save(t);
@@ -57,23 +57,22 @@ public class SessaoEstudoService {
         return save(dto);
     }
 
-    public Boolean verificaSessaoAberta(){
+    public Boolean verificaSessaoAberta() {
         Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
-        if(sessao.isPresent()){
+        if (sessao.isPresent()) {
             return true;
         }
         return false;
     }
 
-    public SessaoEstudoResponseDto sessaoAberta(){
+    public SessaoEstudoResponseDto sessaoAberta() {
         Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
-        if(sessao.isPresent()){
+        if (sessao.isPresent()) {
             sessao.get().setQuantidadeDeMinutos((int) Duration.between(sessao.get().getInicio(), LocalDateTime.now()).toMinutes());
             return toResponseDto(sessao.get());
         }
         return null;
     }
-
 
 
     public SessaoEstudoResponseDto update(SessaoEstudoRequestDto dto, Long id) {
@@ -108,6 +107,16 @@ public class SessaoEstudoService {
             return;
         }
         sessaoEstudoRepository.deleteById(id);
+    }
+
+    public SessaoEstudoResponseDto patchfinalizar(Long id) {
+        return sessaoEstudoRepository.findById(id).map(s -> {
+                    s.finalizar();
+                    sessaoEstudoRepository.save(s);
+                    return toResponseDto(s);
+                }
+        ).orElse(null);
+
     }
 
     private SessaoEstudoResponseDto toResponseDto(SessaoEstudo sessao) {

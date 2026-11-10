@@ -24,7 +24,7 @@ public class SessaoEstudo {
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia,  String anotacao) {
+    public SessaoEstudo(Long id, Materia materia, String anotacao) {
         this.id = id;
         this.materia = materia;
         this.inicio = LocalDateTime.now();
@@ -69,6 +69,11 @@ public class SessaoEstudo {
 
     public void setFim(LocalDateTime fim) {
         this.fim = fim;
+    }
+
+    public void finalizar() {
+        this.fim = LocalDateTime.now();
+        calcularQuantidadeDeMinutos();
     }
 
     public Integer getQuantidadeDeMinutos() {
