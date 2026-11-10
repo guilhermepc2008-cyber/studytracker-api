@@ -9,6 +9,8 @@ import com.projeto.StudyTracker.repository.MateriaRepository;
 import com.projeto.StudyTracker.repository.SessaoEstudoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,6 +55,23 @@ public class SessaoEstudoService {
 
     public SessaoEstudoResponseDto post(SessaoEstudoRequestDto dto) {
         return save(dto);
+    }
+
+    public Boolean verificaSessaoAberta(){
+        Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
+        if(sessao.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
+    public SessaoEstudoResponseDto sessaoAberta(){
+        Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
+        if(sessao.isPresent()){
+            sessao.get().setQuantidadeDeMinutos((int) Duration.between(sessao.get().getInicio(), LocalDateTime.now()).toMinutes());
+            return toResponseDto(sessao.get());
+        }
+        return null;
     }
 
 

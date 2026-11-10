@@ -24,11 +24,10 @@ public class SessaoEstudo {
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim, String anotacao) {
+    public SessaoEstudo(Long id, Materia materia,  String anotacao) {
         this.id = id;
         this.materia = materia;
-        this.inicio = inicio;
-        this.fim = fim;
+        this.inicio = LocalDateTime.now();
         this.anotacao = anotacao;
     }
 
