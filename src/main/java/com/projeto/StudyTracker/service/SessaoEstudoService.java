@@ -1,5 +1,6 @@
 package com.projeto.StudyTracker.service;
 
+import com.projeto.StudyTracker.dto.AnotacaoRequestDto;
 import com.projeto.StudyTracker.dto.SessaoEstudoRequestDto;
 import com.projeto.StudyTracker.dto.SessaoEstudoResponseDto;
 import com.projeto.StudyTracker.entity.Materia;
@@ -9,6 +10,7 @@ import com.projeto.StudyTracker.repository.SessaoEstudoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,16 +32,42 @@ public class SessaoEstudoService {
     }
 
     public SessaoEstudoResponseDto findById(Long id) {
-        SessaoEstudo sessao = sessaoEstudoRepository.findById(id)
-                .orElse(null);
-        return toResponseDto(sessao);
+        Optional<SessaoEstudo> sessaoEstudo = sessaoEstudoRepository.findById(id);
+        return sessaoEstudo.map(this::toResponseDto).orElse(null);
+    }
+
+    public SessaoEstudoResponseDto patchanotacao(Long id,AnotacaoRequestDto anotacaoRequestDto) {
+        return sessaoEstudoRepository.findById(id).map(t -> {
+            t.setAnotacao(anotacaoRequestDto.anotacao());
+            sessaoEstudoRepository.save(t);
+            return toResponseDto(t);
+        }).orElse(null);
     }
 
 
     public SessaoEstudoResponseDto save(SessaoEstudoRequestDto dto) {
         SessaoEstudo sessao = toEntity(dto);
-        SessaoEstudo saved = sessaoEstudoRepository.save(sessao);
-        return toResponseDto(saved);
+        sessaoEstudoRepository.save(sessao);
+        return toResponseDto(sessao);
+    }
+
+    public SessaoEstudoResponseDto post(SessaoEstudoRequestDto dto) {
+        return save(dto);
+    }
+
+
+
+    public SessaoEstudoResponseDto update(SessaoEstudoRequestDto dto, Long id) {
+        return sessaoEstudoRepository.findById(id).map(s -> {
+            Materia materia = materiaRepository.findById(dto.materiaId())
+                    .orElse(null);
+            s.setMateria(materia);
+            s.setInicio(dto.inicio());
+            s.setFim(dto.fim());
+            s.setAnotacao(dto.anotacao());
+            sessaoEstudoRepository.save(s);
+            return toResponseDto(s);
+        }).orElse(null);
     }
 
     public SessaoEstudo toEntity(SessaoEstudoRequestDto dto) {
