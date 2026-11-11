@@ -63,4 +63,10 @@ public class SessaoEstudoController {
         return ResponseEntity.ok(sessao);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        sessaoEstudoService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
