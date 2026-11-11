@@ -3,6 +3,7 @@ package com.projeto.StudyTracker.service;
 import com.projeto.StudyTracker.dto.MateriaRequestDto;
 import com.projeto.StudyTracker.dto.MateriaResponseDto;
 import com.projeto.StudyTracker.entity.Materia;
+import com.projeto.StudyTracker.entity.SessaoEstudo;
 import com.projeto.StudyTracker.repository.MateriaRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,10 @@ public class MateriaService {
     public MateriaResponseDto findById(Long id) {
         Optional<Materia> materia = materiaRepository.findById(id);
         return materia.map(this::toResponseDto).orElse(null);
+    }
+
+    public List<SessaoEstudo> listarSessoesPorMateria(Long materiaId) {
+        return materiaRepository.Sessaomateria(materiaId);
     }
 
     public MateriaResponseDto save(MateriaRequestDto dto) {
