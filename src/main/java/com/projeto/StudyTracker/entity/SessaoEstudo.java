@@ -24,8 +24,7 @@ public class SessaoEstudo {
     public SessaoEstudo() {
     }
 
-    public SessaoEstudo(Long id, Materia materia, String anotacao) {
-        this.id = id;
+    public SessaoEstudo(Materia materia, String anotacao) {
         this.materia = materia;
         this.inicio = LocalDateTime.now();
         this.anotacao = anotacao;

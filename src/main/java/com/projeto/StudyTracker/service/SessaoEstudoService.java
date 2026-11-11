@@ -47,14 +47,10 @@ public class SessaoEstudoService {
     }
 
 
-    public SessaoEstudoResponseDto save(SessaoEstudoRequestDto dto) {
+    public SessaoEstudoResponseDto inicar(SessaoEstudoRequestDto dto) {
         SessaoEstudo sessao = toEntity(dto);
         sessaoEstudoRepository.save(sessao);
         return toResponseDto(sessao);
-    }
-
-    public SessaoEstudoResponseDto post(SessaoEstudoRequestDto dto) {
-        return save(dto);
     }
 
     public Boolean verificaSessaoAberta() {
@@ -75,29 +71,11 @@ public class SessaoEstudoService {
     }
 
 
-    public SessaoEstudoResponseDto update(SessaoEstudoRequestDto dto, Long id) {
-        return sessaoEstudoRepository.findById(id).map(s -> {
-            Materia materia = materiaRepository.findById(dto.materiaId())
-                    .orElse(null);
-            s.setMateria(materia);
-            s.setInicio(dto.inicio());
-            s.setFim(dto.fim());
-            s.setAnotacao(dto.anotacao());
-            sessaoEstudoRepository.save(s);
-            return toResponseDto(s);
-        }).orElse(null);
-    }
-
     public SessaoEstudo toEntity(SessaoEstudoRequestDto dto) {
         Materia materia = materiaRepository.findById(dto.materiaId())
                 .orElse(null);
 
-        SessaoEstudo sessao = new SessaoEstudo();
-        sessao.setMateria(materia);
-        sessao.setInicio(dto.inicio());
-        sessao.setFim(dto.fim());
-        sessao.setAnotacao(dto.anotacao());
-
+        SessaoEstudo sessao = new SessaoEstudo(materia, dto.anotacao());
         return sessao;
     }
 
