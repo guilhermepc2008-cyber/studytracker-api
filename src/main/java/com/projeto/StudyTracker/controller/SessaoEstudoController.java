@@ -4,11 +4,13 @@ import com.projeto.StudyTracker.dto.AnotacaoRequestDto;
 import com.projeto.StudyTracker.dto.SessaoEstudoRequestDto;
 import com.projeto.StudyTracker.dto.SessaoEstudoResponseDto;
 import com.projeto.StudyTracker.service.SessaoEstudoService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -67,6 +69,20 @@ public class SessaoEstudoController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         sessaoEstudoService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SessaoEstudoResponseDto>> filtrarSessaoEstudo(@RequestParam
+                                                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime de,
+                                                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime ate,
+                                                                                 @RequestParam(required = false) Long materiaId
+                                                                                 ) {
+
+        if (materiaId == null) {
+            return ResponseEntity.ok(sessaoEstudoService.verficaSessaoIntervalo(de, ate));
+        }
+        return ResponseEntity.ok(sessaoEstudoService.verficaSessaoIntervaloMateria(de, ate, materiaId));
+
     }
 
 }

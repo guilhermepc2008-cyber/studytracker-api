@@ -61,6 +61,21 @@ public class SessaoEstudoService {
         return false;
     }
 
+    public List<SessaoEstudoResponseDto> verficaSessaoIntervalo(LocalDateTime inicio, LocalDateTime fim) {
+        return sessaoEstudoRepository.findByIntervalo(inicio, fim)
+                .stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<SessaoEstudoResponseDto> verficaSessaoIntervaloMateria(LocalDateTime inicio, LocalDateTime fim, Long materiaId) {
+        return sessaoEstudoRepository.findByMateriaAndIntervalo(materiaId,inicio, fim)
+                .stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
     public SessaoEstudoResponseDto sessaoAberta() {
         Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
         if (sessao.isPresent()) {
