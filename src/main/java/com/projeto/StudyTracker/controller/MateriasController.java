@@ -2,6 +2,7 @@ package com.projeto.StudyTracker.controller;
 
 import com.projeto.StudyTracker.dto.MateriaRequestDto;
 import com.projeto.StudyTracker.dto.MateriaResponseDto;
+import com.projeto.StudyTracker.dto.SessaoEstudoResponseDto;
 import com.projeto.StudyTracker.service.MateriaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,12 @@ public class MateriasController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(materia);
+    }
+
+    @GetMapping("/{id}/sessoes")
+    public ResponseEntity<List<SessaoEstudoResponseDto>> listarSessoesPorMateria(@PathVariable Long id) {
+        List<SessaoEstudoResponseDto> sessoes = materiaService.listarSessoesPorMateria(id);
+        return ResponseEntity.ok(sessoes);
     }
 
     @PutMapping("/{id}")

@@ -2,6 +2,7 @@ package com.projeto.StudyTracker.service;
 
 import com.projeto.StudyTracker.dto.MateriaRequestDto;
 import com.projeto.StudyTracker.dto.MateriaResponseDto;
+import com.projeto.StudyTracker.dto.SessaoEstudoResponseDto;
 import com.projeto.StudyTracker.entity.Materia;
 import com.projeto.StudyTracker.entity.SessaoEstudo;
 import com.projeto.StudyTracker.repository.MateriaRepository;
@@ -31,8 +32,10 @@ public class MateriaService {
         return materia.map(this::toResponseDto).orElse(null);
     }
 
-    public List<SessaoEstudo> listarSessoesPorMateria(Long materiaId) {
-        return materiaRepository.Sessaomateria(materiaId);
+    public List<SessaoEstudoResponseDto> listarSessoesPorMateria(Long materiaId) {
+        return materiaRepository.Sessaomateria(materiaId).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
     }
 
     public MateriaResponseDto save(MateriaRequestDto dto) {
@@ -67,5 +70,17 @@ public class MateriaService {
 
     private MateriaResponseDto toResponseDto(Materia materia) {
         return new MateriaResponseDto(materia.getId(), materia.getTitle(), materia.getDescricao());
+    }
+
+    private SessaoEstudoResponseDto toResponseDto(SessaoEstudo sessao) {
+        return new SessaoEstudoResponseDto(
+                sessao.getId(),
+                sessao.getMateria().getId(),
+                sessao.getMateria().getTitle(),
+                sessao.getInicio(),
+                sessao.getFim(),
+                sessao.getQuantidadeDeMinutos(),
+                sessao.getAnotacao()
+        );
     }
 }
