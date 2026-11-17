@@ -25,7 +25,7 @@ public class SessaoEstudoController {
     }
 
     @PostMapping("/iniciar")
-    public ResponseEntity<?> postsessao(@RequestBody SessaoEstudoRequestDto dto) {
+    public ResponseEntity<SessaoEstudoResponseDto> postsessao(@RequestBody SessaoEstudoRequestDto dto) {
         if (sessaoEstudoService.verificaSessaoAberta()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -71,7 +71,7 @@ public class SessaoEstudoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping(params = {"de", "ate"})
     public ResponseEntity<List<SessaoEstudoResponseDto>> filtrarSessaoEstudo(@RequestParam
                                                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime de,
                                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime ate,
