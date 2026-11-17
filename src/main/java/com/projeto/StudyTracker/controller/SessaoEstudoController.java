@@ -25,21 +25,21 @@ public class SessaoEstudoController {
     }
 
     @PostMapping("/iniciar")
-    public ResponseEntity<SessaoEstudoResponseDto> postsessao(@RequestBody SessaoEstudoRequestDto dto) {
+    public ResponseEntity<?> iniciar(@RequestBody SessaoEstudoRequestDto dto) {
         if (sessaoEstudoService.verificaSessaoAberta()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(sessaoEstudoService.inicar(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(sessaoEstudoService.iniciar(dto));
     }
 
     @GetMapping()
-    public ResponseEntity<List<SessaoEstudoResponseDto>> getSessaoEstudo() {
-        return ResponseEntity.ok(sessaoEstudoService.findAll());
+    public ResponseEntity<List<SessaoEstudoResponseDto>> listarTodas() {
+        return ResponseEntity.ok(sessaoEstudoService.listarTodas());
     }
 
     @GetMapping("/ativa")
-    public ResponseEntity<SessaoEstudoResponseDto> getSessaoAtiva() {
-        SessaoEstudoResponseDto sessao = sessaoEstudoService.sessaoAberta();
+    public ResponseEntity<SessaoEstudoResponseDto> buscarSessaoAtiva() {
+        SessaoEstudoResponseDto sessao = sessaoEstudoService.buscarSessaoAberta();
         if (sessao == null) {
             return ResponseEntity.notFound().build();
         }
@@ -49,7 +49,7 @@ public class SessaoEstudoController {
     @PatchMapping("/{id}/anotacao")
     public ResponseEntity<SessaoEstudoResponseDto> patchAnotacao(@PathVariable Long id,
                                                                  @RequestBody AnotacaoRequestDto anotacaoRequestDto) {
-        SessaoEstudoResponseDto sessao = sessaoEstudoService.patchanotacao(id, anotacaoRequestDto);
+        SessaoEstudoResponseDto sessao = sessaoEstudoService.patchAnotacao(id, anotacaoRequestDto);
         if (sessao == null) {
             return ResponseEntity.notFound().build();
         }
@@ -58,7 +58,7 @@ public class SessaoEstudoController {
 
     @PatchMapping("/{id}/finalizar")
     public ResponseEntity<SessaoEstudoResponseDto> patchFinalizar(@PathVariable Long id) {
-        SessaoEstudoResponseDto sessao = sessaoEstudoService.patchfinalizar(id);
+        SessaoEstudoResponseDto sessao = sessaoEstudoService.patchFinalizar(id);
         if (sessao == null) {
             return ResponseEntity.notFound().build();
         }
@@ -67,7 +67,7 @@ public class SessaoEstudoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        sessaoEstudoService.deleteById(id);
+        sessaoEstudoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -79,9 +79,9 @@ public class SessaoEstudoController {
                                                                                  ) {
 
         if (materiaId == null) {
-            return ResponseEntity.ok(sessaoEstudoService.verficaSessaoIntervalo(de, ate));
+            return ResponseEntity.ok(sessaoEstudoService.verificaSessaoIntervalo(de, ate));
         }
-        return ResponseEntity.ok(sessaoEstudoService.verficaSessaoIntervaloMateria(de, ate, materiaId));
+        return ResponseEntity.ok(sessaoEstudoService.verificaSessaoIntervaloMateria(de, ate, materiaId));
 
     }
 

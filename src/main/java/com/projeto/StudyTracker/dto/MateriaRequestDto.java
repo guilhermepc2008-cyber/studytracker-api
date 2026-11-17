@@ -1,4 +1,4 @@
 package com.projeto.StudyTracker.dto;
 
-public record MateriaRequestDto(String title, String descricao) {
+public record MateriaRequestDto(String titulo, String descricao) {
 }

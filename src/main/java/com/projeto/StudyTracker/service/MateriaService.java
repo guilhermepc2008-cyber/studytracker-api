@@ -21,62 +21,62 @@ public class MateriaService {
         this.materiaRepository = materiaRepository;
     }
 
-    public List<MateriaResponseDto> findAll() {
+    public List<MateriaResponseDto> listarTodas() {
         return materiaRepository.findAll().stream()
-                .map(this::toResponseDto)
+                .map(this::converterParaDto)
                 .collect(Collectors.toList());
     }
 
-    public MateriaResponseDto findById(Long id) {
+    public MateriaResponseDto buscarPorId(Long id) {
         Optional<Materia> materia = materiaRepository.findById(id);
-        return materia.map(this::toResponseDto).orElse(null);
+        return materia.map(this::converterParaDto).orElse(null);
     }
 
     public List<SessaoEstudoResponseDto> listarSessoesPorMateria(Long materiaId) {
-        return materiaRepository.Sessaomateria(materiaId).stream()
-                .map(this::toResponseDto)
+        return materiaRepository.buscarSessoesPorMateria(materiaId).stream()
+                .map(this::converterParaDto)
                 .collect(Collectors.toList());
     }
 
-    public MateriaResponseDto save(MateriaRequestDto dto) {
-        Materia materia = toEntity(dto);
+    public MateriaResponseDto salvar(MateriaRequestDto dto) {
+        Materia materia = converterParaEntidade(dto);
         materiaRepository.save(materia);
-        return toResponseDto(materia);
+        return converterParaDto(materia);
     }
 
-    public MateriaResponseDto update(MateriaRequestDto dto, Long id) {
+    public MateriaResponseDto atualizar(MateriaRequestDto dto, Long id) {
         return materiaRepository.findById(id).map(t -> {
                     t.setDescricao(dto.descricao());
-                    t.setTitle(dto.title());
+                    t.setTitulo(dto.titulo());
                     materiaRepository.save(t);
-                    return toResponseDto(t);
+                    return converterParaDto(t);
                 }
         ).orElse(null);
     }
 
-    public Materia toEntity(MateriaRequestDto dto) {
+    public Materia converterParaEntidade(MateriaRequestDto dto) {
         Materia materia = new Materia();
-        materia.setTitle(dto.title());
+        materia.setTitulo(dto.titulo());
         materia.setDescricao(dto.descricao());
         return materia;
     }
 
-    public void deleteById(Long id) {
+    public void deletar(Long id) {
         if (!materiaRepository.existsById(id)) {
             return;
         }
         materiaRepository.deleteById(id);
     }
 
-    private MateriaResponseDto toResponseDto(Materia materia) {
-        return new MateriaResponseDto(materia.getId(), materia.getTitle(), materia.getDescricao());
+    private MateriaResponseDto converterParaDto(Materia materia) {
+        return new MateriaResponseDto(materia.getId(), materia.getTitulo(), materia.getDescricao());
     }
 
-    private SessaoEstudoResponseDto toResponseDto(SessaoEstudo sessao) {
+    private SessaoEstudoResponseDto converterParaDto(SessaoEstudo sessao) {
         return new SessaoEstudoResponseDto(
                 sessao.getId(),
                 sessao.getMateria().getId(),
-                sessao.getMateria().getTitle(),
+                sessao.getMateria().getTitulo(),
                 sessao.getInicio(),
                 sessao.getFim(),
                 sessao.getQuantidadeDeMinutos(),

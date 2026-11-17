@@ -27,66 +27,63 @@ public class SessaoEstudoService {
         this.materiaRepository = materiaRepository;
     }
 
-    public List<SessaoEstudoResponseDto> findAll() {
+    public List<SessaoEstudoResponseDto> listarTodas() {
         return sessaoEstudoRepository.findAll().stream()
-                .map(this::toResponseDto)
+                .map(this::converterParaDto)
                 .collect(Collectors.toList());
     }
 
-    public SessaoEstudoResponseDto findById(Long id) {
+    public SessaoEstudoResponseDto buscarPorId(Long id) {
         Optional<SessaoEstudo> sessaoEstudo = sessaoEstudoRepository.findById(id);
-        return sessaoEstudo.map(this::toResponseDto).orElse(null);
+        return sessaoEstudo.map(this::converterParaDto).orElse(null);
     }
 
-    public SessaoEstudoResponseDto patchanotacao(Long id, AnotacaoRequestDto anotacaoRequestDto) {
+    public SessaoEstudoResponseDto patchAnotacao(Long id, AnotacaoRequestDto anotacaoRequestDto) {
         return sessaoEstudoRepository.findById(id).map(t -> {
             t.setAnotacao(anotacaoRequestDto.anotacao());
             sessaoEstudoRepository.save(t);
-            return toResponseDto(t);
+            return converterParaDto(t);
         }).orElse(null);
     }
 
-
-    public SessaoEstudoResponseDto inicar(SessaoEstudoRequestDto dto) {
-        SessaoEstudo sessao = toEntity(dto);
+    public SessaoEstudoResponseDto iniciar(SessaoEstudoRequestDto dto) {
+        SessaoEstudo sessao = converterParaEntidade(dto);
         sessaoEstudoRepository.save(sessao);
-        return toResponseDto(sessao);
+        return converterParaDto(sessao);
     }
 
     public Boolean verificaSessaoAberta() {
-        Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
+        Optional<SessaoEstudo> sessao = sessaoEstudoRepository.buscarPorFimNulo();
         if (sessao.isPresent()) {
             return true;
         }
         return false;
     }
 
-    public List<SessaoEstudoResponseDto> verficaSessaoIntervalo(LocalDateTime inicio, LocalDateTime fim) {
-        return sessaoEstudoRepository.findByIntervalo(inicio, fim)
+    public List<SessaoEstudoResponseDto> verificaSessaoIntervalo(LocalDateTime inicio, LocalDateTime fim) {
+        return sessaoEstudoRepository.buscarPorIntervalo(inicio, fim)
                 .stream()
-                .map(this::toResponseDto)
+                .map(this::converterParaDto)
                 .collect(Collectors.toList());
     }
 
-
-    public List<SessaoEstudoResponseDto> verficaSessaoIntervaloMateria(LocalDateTime inicio, LocalDateTime fim, Long materiaId) {
-        return sessaoEstudoRepository.findByMateriaAndIntervalo(materiaId,inicio, fim)
+    public List<SessaoEstudoResponseDto> verificaSessaoIntervaloMateria(LocalDateTime inicio, LocalDateTime fim, Long materiaId) {
+        return sessaoEstudoRepository.buscarPorMateriaEIntervalo(materiaId, inicio, fim)
                 .stream()
-                .map(this::toResponseDto)
+                .map(this::converterParaDto)
                 .collect(Collectors.toList());
     }
 
-    public SessaoEstudoResponseDto sessaoAberta() {
-        Optional<SessaoEstudo> sessao = sessaoEstudoRepository.findByFimIsNull();
+    public SessaoEstudoResponseDto buscarSessaoAberta() {
+        Optional<SessaoEstudo> sessao = sessaoEstudoRepository.buscarPorFimNulo();
         if (sessao.isPresent()) {
             sessao.get().setQuantidadeDeMinutos((int) Duration.between(sessao.get().getInicio(), LocalDateTime.now()).toMinutes());
-            return toResponseDto(sessao.get());
+            return converterParaDto(sessao.get());
         }
         return null;
     }
 
-
-    public SessaoEstudo toEntity(SessaoEstudoRequestDto dto) {
+    public SessaoEstudo converterParaEntidade(SessaoEstudoRequestDto dto) {
         Materia materia = materiaRepository.findById(dto.materiaId())
                 .orElse(null);
 
@@ -94,29 +91,27 @@ public class SessaoEstudoService {
         return sessao;
     }
 
-
-    public void deleteById(Long id) {
+    public void deletar(Long id) {
         if (!sessaoEstudoRepository.existsById(id)) {
             return;
         }
         sessaoEstudoRepository.deleteById(id);
     }
 
-    public SessaoEstudoResponseDto patchfinalizar(Long id) {
+    public SessaoEstudoResponseDto patchFinalizar(Long id) {
         return sessaoEstudoRepository.findById(id).map(s -> {
                     s.finalizar();
                     sessaoEstudoRepository.save(s);
-                    return toResponseDto(s);
+                    return converterParaDto(s);
                 }
         ).orElse(null);
-
     }
 
-    private SessaoEstudoResponseDto toResponseDto(SessaoEstudo sessao) {
+    private SessaoEstudoResponseDto converterParaDto(SessaoEstudo sessao) {
         return new SessaoEstudoResponseDto(
                 sessao.getId(),
                 sessao.getMateria().getId(),
-                sessao.getMateria().getTitle(),
+                sessao.getMateria().getTitulo(),
                 sessao.getInicio(),
                 sessao.getFim(),
                 sessao.getQuantidadeDeMinutos(),

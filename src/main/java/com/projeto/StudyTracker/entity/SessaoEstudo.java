@@ -1,7 +1,11 @@
 package com.projeto.StudyTracker.entity;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -24,14 +28,23 @@ public class SessaoEstudo {
     public SessaoEstudo() {
     }
 
+    public SessaoEstudo(Long id, Materia materia, LocalDateTime inicio, LocalDateTime fim, Integer quantidadeDeMinutos, String anotacao) {
+        this.id = id;
+        this.materia = materia;
+        this.inicio = inicio;
+        this.fim = fim;
+        this.quantidadeDeMinutos = quantidadeDeMinutos;
+        this.anotacao = anotacao;
+    }
+
     public SessaoEstudo(Materia materia, String anotacao) {
         this.materia = materia;
         this.inicio = LocalDateTime.now();
         this.anotacao = anotacao;
     }
 
-    @PrePersist
-    @PreUpdate
+    @jakarta.persistence.PrePersist
+    @jakarta.persistence.PreUpdate
     public void calcularQuantidadeDeMinutos() {
         if (this.inicio != null && this.fim != null) {
             this.quantidadeDeMinutos = (int) Duration.between(this.inicio, this.fim).toMinutes();

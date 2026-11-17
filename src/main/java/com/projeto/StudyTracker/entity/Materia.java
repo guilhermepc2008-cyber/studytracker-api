@@ -11,15 +11,15 @@ public class Materia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
+    private String titulo;
     private String descricao;
 
     public Materia() {
     }
 
-    public Materia(Long id, String title, String descricao) {
+    public Materia(Long id, String titulo, String descricao) {
         this.id = id;
-        this.title = title;
+        this.titulo = titulo;
         this.descricao = descricao;
     }
 
@@ -31,12 +31,12 @@ public class Materia {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getDescricao() {

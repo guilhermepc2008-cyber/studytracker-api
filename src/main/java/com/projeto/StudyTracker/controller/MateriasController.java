@@ -23,20 +23,20 @@ public class MateriasController {
     }
 
     @PostMapping
-    public ResponseEntity<MateriaResponseDto> postsessao(@RequestBody MateriaRequestDto dto) {
-        MateriaResponseDto materia = materiaService.save(dto);
+    public ResponseEntity<MateriaResponseDto> cadastrar(@RequestBody MateriaRequestDto dto) {
+        MateriaResponseDto materia = materiaService.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(materia);
     }
 
     @GetMapping
     public ResponseEntity<List<MateriaResponseDto>> listarTodas() {
-        List<MateriaResponseDto> materias = materiaService.findAll();
+        List<MateriaResponseDto> materias = materiaService.listarTodas();
         return ResponseEntity.ok(materias);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MateriaResponseDto> buscarPorId(@PathVariable Long id) {
-        MateriaResponseDto materia = materiaService.findById(id);
+        MateriaResponseDto materia = materiaService.buscarPorId(id);
         if (materia == null) {
             return ResponseEntity.notFound().build();
         }
@@ -52,7 +52,7 @@ public class MateriasController {
     @PutMapping("/{id}")
     public ResponseEntity<MateriaResponseDto> atualizar(@PathVariable Long id,
                                                         @RequestBody MateriaRequestDto dto) {
-        MateriaResponseDto materiaAtualizada = materiaService.update(dto, id);
+        MateriaResponseDto materiaAtualizada = materiaService.atualizar(dto, id);
         if (materiaAtualizada == null) {
             return ResponseEntity.notFound().build();
         }
@@ -61,7 +61,7 @@ public class MateriasController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        materiaService.deleteById(id);
+        materiaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
