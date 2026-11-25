@@ -23,7 +23,7 @@ public class MateriasController {
     }
 
     @PostMapping
-    public ResponseEntity<MateriaResponseDto> cadastrar(@RequestBody MateriaRequestDto dto) {
+    public ResponseEntity<MateriaResponseDto> salvaressao(@RequestBody MateriaRequestDto dto) {
         MateriaResponseDto materia = materiaService.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(materia);
     }
@@ -36,7 +36,7 @@ public class MateriasController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MateriaResponseDto> buscarPorId(@PathVariable Long id) {
-        MateriaResponseDto materia = materiaService.buscarPorId(id);
+        MateriaResponseDto materia = materiaService.findById(id);
         if (materia == null) {
             return ResponseEntity.notFound().build();
         }

@@ -27,14 +27,14 @@ public class MateriaService {
                 .collect(Collectors.toList());
     }
 
-    public MateriaResponseDto buscarPorId(Long id) {
+    public MateriaResponseDto findById(Long id) {
         Optional<Materia> materia = materiaRepository.findById(id);
         return materia.map(this::converterParaDto).orElse(null);
     }
 
     public List<SessaoEstudoResponseDto> listarSessoesPorMateria(Long materiaId) {
-        return materiaRepository.buscarSessoesPorMateria(materiaId).stream()
-                .map(this::converterParaDto)
+        return materiaRepository.Sessaomateria(materiaId).stream()
+                .map(this::converterParaDtoSessao)
                 .collect(Collectors.toList());
     }
 
@@ -46,8 +46,8 @@ public class MateriaService {
 
     public MateriaResponseDto atualizar(MateriaRequestDto dto, Long id) {
         return materiaRepository.findById(id).map(t -> {
-                    t.setDescricao(dto.descricao());
                     t.setTitulo(dto.titulo());
+                    t.setDescricao(dto.descricao());
                     materiaRepository.save(t);
                     return converterParaDto(t);
                 }
@@ -61,6 +61,7 @@ public class MateriaService {
         return materia;
     }
 
+    @Transactional
     public void deletar(Long id) {
         if (!materiaRepository.existsById(id)) {
             return;
@@ -72,7 +73,7 @@ public class MateriaService {
         return new MateriaResponseDto(materia.getId(), materia.getTitulo(), materia.getDescricao());
     }
 
-    private SessaoEstudoResponseDto converterParaDto(SessaoEstudo sessao) {
+    private SessaoEstudoResponseDto converterParaDtoSessao(SessaoEstudo sessao) {
         return new SessaoEstudoResponseDto(
                 sessao.getId(),
                 sessao.getMateria().getId(),
