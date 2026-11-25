@@ -16,5 +16,32 @@ public class Metas {
     private Materia materia;
 
 
+    public Metas(Integer qtdminuto, Materia materia) {
+        this.qtdminuto = qtdminuto;
+        this.materia = materia;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getQtdminuto() {
+        return qtdminuto;
+    }
+
+    public void setQtdminuto(Integer qtdminuto) {
+        this.qtdminuto = qtdminuto;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
 }
