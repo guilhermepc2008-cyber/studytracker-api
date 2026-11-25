@@ -24,5 +24,12 @@ public interface SessaoEstudoRepository extends JpaRepository<SessaoEstudo, Long
     @Query("SELECT s FROM SessaoEstudo s WHERE s.materia.id = ?1 ORDER BY s.inicio ASC")
     List<SessaoEstudo> buscarSessoesPorMateria(Long materiaId);
 
+    @Query("""
+    SELECT COALESCE(SUM(s.quantidadeDeMinutos), 0)
+    FROM SessaoEstudo s
+    WHERE s.materia.id = ?1 AND s.inicio >= ?2 AND s.inicio < ?3
+""")
+    Long somarMinutos(Long materiaId, LocalDateTime de, LocalDateTime ate);
+
 
 }
