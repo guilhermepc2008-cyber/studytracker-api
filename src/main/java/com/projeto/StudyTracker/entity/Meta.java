@@ -3,7 +3,7 @@ package com.projeto.StudyTracker.entity;
 import jakarta.persistence.*;
 
 @Entity
-public class Metas {
+public class Meta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,12 @@ public class Metas {
     private Materia materia;
 
 
-    public Metas(Integer qtdminuto, Materia materia) {
+    public Meta(Integer qtdminuto, Materia materia) {
         this.qtdminuto = qtdminuto;
         this.materia = materia;
     }
 
-    public Metas() {}
+    public Meta() {}
 
     public Long getId() {
         return id;

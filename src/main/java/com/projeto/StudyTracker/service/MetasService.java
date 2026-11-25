@@ -2,7 +2,7 @@ package com.projeto.StudyTracker.service;
 
 import com.projeto.StudyTracker.dto.MetaRequestDto;
 import com.projeto.StudyTracker.dto.MetaResponseDto;
-import com.projeto.StudyTracker.entity.Metas;
+import com.projeto.StudyTracker.entity.Meta;
 import com.projeto.StudyTracker.repository.MetasRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +18,25 @@ public class MetasService {
         this.metasRepository = metasRepository;
     }
 
-    public Metas converterParaEntidade(MetaRequestDto dto) {
-        Metas metas = new Metas();
-        metas.setQtdminuto(dto.minutosPorSemana());
-        return metas;
+    public Meta converterParaEntidade(MetaRequestDto dto) {
+        Meta meta = new Meta();
+        meta.setQtdminuto(dto.minutosPorSemana());
+        return meta;
     }
 
-    public MetaResponseDto converterParaDto(Metas metas) {
+    public MetaResponseDto converterParaDto(Meta meta) {
         return new MetaResponseDto(
-                metas.getId(),
-                metas.getMateria().getId(),
-                metas.getMateria().getTitulo(),
-                metas.getQtdminuto()
+                meta.getId(),
+                meta.getMateria().getId(),
+                meta.getMateria().getTitulo(),
+                meta.getQtdminuto()
         );
     }
 
     public MetaResponseDto salvar(MetaRequestDto dto) {
-        Metas metas = converterParaEntidade(dto);
-        metasRepository.save(metas);
-        return converterParaDto(metas);
+        Meta meta = converterParaEntidade(dto);
+        metasRepository.save(meta);
+        return converterParaDto(meta);
     }
 
     public void deletar(Long id) {
@@ -47,7 +47,7 @@ public class MetasService {
     }
 
     public MetaResponseDto atualizar(MetaRequestDto dto, Long id) {
-        Optional<Metas> metasExistente = metasRepository.findById(id);
+        Optional<Meta> metasExistente = metasRepository.findById(id);
         return metasExistente.map(m -> {
             m.setQtdminuto(dto.minutosPorSemana());
             metasRepository.save(m);
@@ -60,7 +60,7 @@ public class MetasService {
     }
 
     public MetaResponseDto buscarPorId(Long id) {
-        Optional<Metas> metas = metasRepository.findById(id);
+        Optional<Meta> metas = metasRepository.findById(id);
         return metas.map(this::converterParaDto).orElse(null);
     }
 
