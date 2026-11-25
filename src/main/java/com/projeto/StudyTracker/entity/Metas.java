@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Metas {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -11,7 +12,7 @@ public class Metas {
     @Column(name = "meta_minutos",  nullable = false)
     private Integer qtdminuto;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "materia_id", nullable = false, unique = true)
     private Materia materia;
 
@@ -20,6 +21,8 @@ public class Metas {
         this.qtdminuto = qtdminuto;
         this.materia = materia;
     }
+
+    public Metas() {}
 
     public Long getId() {
         return id;
