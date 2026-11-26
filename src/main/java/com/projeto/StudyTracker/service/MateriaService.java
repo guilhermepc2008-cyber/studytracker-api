@@ -61,13 +61,15 @@ public class MateriaService {
         return materia;
     }
 
-    @Transactional
+
     public void deletar(Long id) {
         if (!materiaRepository.existsById(id)) {
             return;
         }
         materiaRepository.deleteById(id);
     }
+
+
 
     private MateriaResponseDto converterParaDto(Materia materia) {
         return new MateriaResponseDto(materia.getId(), materia.getTitulo(), materia.getDescricao());

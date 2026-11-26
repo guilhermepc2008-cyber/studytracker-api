@@ -17,8 +17,8 @@ public class Meta {
     private Materia materia;
 
 
-    public Meta(Integer qtdminuto, Materia materia) {
-        this.qtdminuto = qtdminuto;
+    public Meta(Materia materia) {
+        this.qtdminuto = 0;
         this.materia = materia;
     }
 

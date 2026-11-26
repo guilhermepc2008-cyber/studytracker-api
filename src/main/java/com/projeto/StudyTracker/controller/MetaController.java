@@ -2,7 +2,7 @@ package com.projeto.StudyTracker.controller;
 
 import com.projeto.StudyTracker.dto.MetaRequestDto;
 import com.projeto.StudyTracker.dto.MetaResponseDto;
-import com.projeto.StudyTracker.service.MetasService;
+import com.projeto.StudyTracker.service.MetaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,21 +15,21 @@ import java.util.List;
 @Validated
 public class MetaController {
 
-    private final MetasService metasService;
+    private final MetaService metaService;
 
-    public MetaController(MetasService metasService) {
-        this.metasService = metasService;
+    public MetaController(MetaService metaService) {
+        this.metaService = metaService;
     }
 
     @GetMapping
     public ResponseEntity<List<MetaResponseDto>> listarTodos() {
-        List<MetaResponseDto> metas = metasService.buscarTodos();
+        List<MetaResponseDto> metas = metaService.buscarTodos();
         return ResponseEntity.ok(metas);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MetaResponseDto> buscarPorId(@PathVariable Long id) {
-        MetaResponseDto meta = metasService.buscarPorId(id);
+        MetaResponseDto meta = metaService.buscarPorId(id);
         if (meta == null) {
             return ResponseEntity.notFound().build();
         }
@@ -38,14 +38,14 @@ public class MetaController {
 
     @PostMapping
     public ResponseEntity<MetaResponseDto> criarMeta(@RequestBody MetaRequestDto dto) {
-        MetaResponseDto meta = metasService.salvar(dto);
+        MetaResponseDto meta = metaService.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(meta);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MetaResponseDto> atualizarMeta(@PathVariable Long id,
-                                                     @RequestBody MetaRequestDto dto) {
-        MetaResponseDto metaAtualizada = metasService.atualizar(dto, id);
+                                                         @RequestBody MetaRequestDto dto) {
+        MetaResponseDto metaAtualizada = metaService.atualizar(dto, id);
         if (metaAtualizada == null) {
             return ResponseEntity.notFound().build();
         }
@@ -54,7 +54,7 @@ public class MetaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        metasService.deletar(id);
+        metaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
