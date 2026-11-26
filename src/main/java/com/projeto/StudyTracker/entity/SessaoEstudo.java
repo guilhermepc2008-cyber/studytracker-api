@@ -1,5 +1,6 @@
 package com.projeto.StudyTracker.entity;
 
+import com.projeto.StudyTracker.dto.ProgressoMetaDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -103,4 +104,6 @@ public class SessaoEstudo {
     public void setAnotacao(String anotacao) {
         this.anotacao = anotacao;
     }
+
+
 }

@@ -2,9 +2,9 @@ package com.projeto.StudyTracker.dto;
 
 public record ProgressoMetaDto(
     String materiaTitulo,
-    Integer metaMinutos,
-    Integer estudadoMinutos,
-    Integer faltamMinutos,
+    Long metaMinutos,
+    Long estudadoMinutos,
+    Long faltamMinutos,
     Double percentual,
     Boolean atingida
 ) {

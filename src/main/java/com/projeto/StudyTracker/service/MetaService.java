@@ -2,12 +2,18 @@ package com.projeto.StudyTracker.service;
 
 import com.projeto.StudyTracker.dto.MetaRequestDto;
 import com.projeto.StudyTracker.dto.MetaResponseDto;
+import com.projeto.StudyTracker.dto.ProgressoMetaDto;
 import com.projeto.StudyTracker.entity.Meta;
 import com.projeto.StudyTracker.entity.Materia;
 import com.projeto.StudyTracker.repository.MateriaRepository;
 import com.projeto.StudyTracker.repository.MetaRepository;
+import com.projeto.StudyTracker.repository.SessaoEstudoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +22,12 @@ public class MetaService {
 
     private final MetaRepository metaRepository;
     private final MateriaRepository materiaRepository;
+    private final SessaoEstudoRepository sessaoEstudoRepository;
 
-    public MetaService(MetaRepository metaRepository, MateriaRepository materiaRepository) {
+    public MetaService(MetaRepository metaRepository, MateriaRepository materiaRepository, SessaoEstudoRepository sessaoEstudoRepository) {
         this.metaRepository = metaRepository;
         this.materiaRepository = materiaRepository;
+        this.sessaoEstudoRepository = sessaoEstudoRepository;
     }
 
     public Meta converterParaEntidade(MetaRequestDto dto) {
@@ -79,5 +87,31 @@ public class MetaService {
         return metaRepository.findAll().stream()
                 .map(this::converterParaDto)
                 .toList();
+    }
+
+    public ProgressoMetaDto analisarProgresso(Long materiaId) {
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDateTime inicio = segunda.atStartOfDay();
+        LocalDateTime fim = segunda.plusWeeks(1).atStartOfDay();
+
+        Long minutostotais = sessaoEstudoRepository.somarMinutos(materiaId, inicio, fim);
+
+        Meta meta = metaRepository.findByMateriaId(materiaId).get();
+
+
+        Long metaMinutos = meta.getQtdminuto();
+        Long faltamMinutos = Math.max(0, metaMinutos - minutostotais);
+        Double percentual = (minutostotais * 100.0) / metaMinutos;
+        Boolean atingida = minutostotais >= metaMinutos;
+
+        return new ProgressoMetaDto(
+                meta.getMateria().getTitulo(),
+                metaMinutos,
+                minutostotais,
+                faltamMinutos,
+                percentual,
+                atingida
+        );
     }
 }

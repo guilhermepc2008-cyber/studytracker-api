@@ -10,15 +10,15 @@ public class Meta {
     private Long id;
 
     @Column(name = "meta_minutos",  nullable = false)
-    private Integer qtdminuto;
+    private Long qtdminuto;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "materia_id", nullable = false, unique = true)
     private Materia materia;
 
 
-    public Meta(Materia materia) {
-        this.qtdminuto = 0;
+    public Meta(Materia materia,  Long qtdminuto) {
+        this.qtdminuto = qtdminuto;
         this.materia = materia;
     }
 
@@ -32,11 +32,11 @@ public class Meta {
         this.id = id;
     }
 
-    public Integer getQtdminuto() {
+    public Long getQtdminuto() {
         return qtdminuto;
     }
 
-    public void setQtdminuto(Integer qtdminuto) {
+    public void setQtdminuto(Long qtdminuto) {
         this.qtdminuto = qtdminuto;
     }
 

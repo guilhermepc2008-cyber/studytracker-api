@@ -1,4 +1,4 @@
 package com.projeto.StudyTracker.dto;
 
-public record MetaRequestDto(Long materiaId, Integer minutosPorSemana) {
+public record MetaRequestDto(Long materiaId, Long minutosPorSemana) {
 }

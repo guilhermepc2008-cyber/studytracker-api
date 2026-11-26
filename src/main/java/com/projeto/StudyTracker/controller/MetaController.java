@@ -2,6 +2,7 @@ package com.projeto.StudyTracker.controller;
 
 import com.projeto.StudyTracker.dto.MetaRequestDto;
 import com.projeto.StudyTracker.dto.MetaResponseDto;
+import com.projeto.StudyTracker.dto.ProgressoMetaDto;
 import com.projeto.StudyTracker.service.MetaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,12 @@ public class MetaController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(meta);
+    }
+
+    @GetMapping("/{id}/progresso")
+    public ResponseEntity<ProgressoMetaDto> analisarProgresso(@PathVariable Long id) {
+        ProgressoMetaDto progresso = metaService.analisarProgresso(id);
+        return ResponseEntity.ok(progresso);
     }
 
     @PostMapping
